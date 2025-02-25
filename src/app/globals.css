@@ -123,6 +123,34 @@ body {
   pointer-events: none;
 }
 
+.tiptap h1{
+  @apply text-4xl font-bold;
+}
+
+.tiptap h2{
+  @apply text-3xl font-bold;
+}
+
+.tiptap h3{
+  @apply text-2xl font-bold;
+}
+
+.tiptap blockquote {
+  border-left: 4px solid #f98181;
+  color: #616161;
+  margin: 1.5rem 0;
+  padding: 0.5rem 1rem;
+}
+
+.tiptap hr{
+  border: none;
+  border-top: 1px solid #333;
+  margin: 1.5rem 0;
+}
+
+
+
+
 
 
 
@@ -155,3 +183,4 @@ body {
   margin-left: auto;
   margin-right: 0.5rem;
 }
+

@@ -138,12 +138,12 @@ const extensions = [
   Heading.configure({ levels: [1, 2, 3] }),
   BulletList.configure({
     HTMLAttributes: {
-      class: "list-disc ml-4",
+      class: "list-disc ml-4 mb-2",
     },
   }),
   OrderedList.configure({
     HTMLAttributes: {
-      class: "list-decimal ml-4",
+      class: "list-decimal ml-4 mb-2",
     },
   }),
   TextAlign.configure({
@@ -277,6 +277,7 @@ const Editor = (props) => {
                   arrow: false,
                   theme: 'light-border',
                   offset: [0, 12],
+                  
                 })[0]
               },
               onUpdate: (props) => {

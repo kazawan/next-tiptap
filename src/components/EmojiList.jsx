@@ -260,7 +260,7 @@ export const EmojiList = forwardRef((props, ref) => {
   return (
     <div className="relative overflow-hidden rounded-md  bg-[rgb(51, 51, 51)] shadow-xs">
       <div className="relative w-[384px] max-h-[240px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent" ref={containerRef}>
-        <div className="grid grid-cols-8 gap-[1rem]">
+        <div className="grid grid-cols-7 gap-[0]">
           {filteredEmojis.length ? (
             filteredEmojis.map((item, index) => (
               <button
