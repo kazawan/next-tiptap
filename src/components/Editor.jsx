@@ -33,6 +33,8 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import { SlashCommandExtension } from './SlashCommandExtension'
 import { SlashCommandList } from './SlashCommandList'
+import { EmojiExtension } from './EmojiExtension'
+import { EmojiList } from './EmojiList'
 
 const lowlight = createLowlight(all)
 
@@ -119,6 +121,11 @@ const getSuggestionItems = (query, imageDialogCallback, linkDialogCallback) => {
   ].filter(item => item.title.toLowerCase().includes(queryText.toLowerCase()))
 }
 
+const getEmojiSuggestionItems = (query) => {
+  // 这里直接返回一个空数组，实际的emoji列表和过滤会在EmojiList组件中处理
+  return [{ query }]
+}
+
 const extensions = [
   StarterKit,
   Bold,
@@ -164,11 +171,11 @@ const extensions = [
     bulletListMarker: '-',
     linkify: true,
     breaks: true,
-    transformPastedText: true,
-    transformCopiedText: true,
+    transformPastedText: false,
+    transformCopiedText: false,
   }),
   Placeholder.configure({
-    placeholder: "猛击键盘，开始创作...",
+    placeholder: "输入'/'获取更多命令，输入'::'插入表情",
   }),
   Link.configure({
     protocols: ["http", "https", "www"],
@@ -298,6 +305,63 @@ const Editor = (props) => {
           },
         },
       }),
+      EmojiExtension.configure({
+        suggestion: {
+          items: ({ query }) => getEmojiSuggestionItems(query),
+          render: () => {
+            let reactRenderer
+            let popup
+
+            return {
+              onStart: (props) => {
+                reactRenderer = new ReactRenderer(EmojiList, {
+                  props,
+                  editor: props.editor,
+                })
+
+                if (!props.clientRect) {
+                  return
+                }
+
+                popup = tippy('body', {
+                  getReferenceClientRect: () => props.clientRect(),
+                  appendTo: () => document.body,
+                  content: reactRenderer.element,
+                  showOnCreate: true,
+                  interactive: true,
+                  trigger: 'manual',
+                  placement: 'bottom-start',
+                  arrow: false,
+                  theme: 'light-border',
+                  offset: [0, 12],
+                })[0]
+              },
+              onUpdate: (props) => {
+                reactRenderer.updateProps(props)
+                
+                if (!props.clientRect) {
+                  return
+                }
+
+                popup?.setProps({
+                  getReferenceClientRect: () => props.clientRect(),
+                })
+              },
+              onKeyDown: (props) => {
+                if (props.event.key === 'Escape') {
+                  popup?.hide()
+                  return true
+                }
+                return reactRenderer?.ref?.onKeyDown(props)
+              },
+              onExit: () => {
+                popup?.destroy()
+                reactRenderer?.destroy()
+              },
+            }
+          },
+        },
+      }),
     ],
     editorProps: {
       attributes: {
@@ -306,7 +370,7 @@ const Editor = (props) => {
     },
     content: content,
     onUpdate({ editor }) {
-      onChange(editor.getJSON());
+      onChange(editor.storage.markdown.getMarkdown());
     },
   });
 

@@ -35,6 +35,10 @@ function Home() {
     setContent(e);
   }
 
+  function handleSave() {
+    console.log(content);
+  }
+
   return (
     <>
       <div className="flex justify-center align-middle ">
@@ -43,7 +47,11 @@ function Home() {
         </div>
         <Editor content={content} onChange={handleOnchange} />
         <div>
-          
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleSave}
+          >
+            Save
+          </button>
         </div>
       </div>
       <div>
