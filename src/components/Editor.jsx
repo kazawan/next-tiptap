@@ -372,6 +372,8 @@ const Editor = (props) => {
     content: content,
     onUpdate({ editor }) {
       onChange(editor.storage.markdown.getMarkdown());
+      // onChange(editor.getJSON());
+      
     },
   });
 
